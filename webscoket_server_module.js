@@ -5,7 +5,7 @@ var WebSocketServer = require('ws').Server
 // create websocket server
 
 var _HOST_ = "0.0.0.0";
-var _PORT_ = 8002;
+var _PORT_ = 8080;
 var wss = new WebSocketServer({ host: _HOST_, port: _PORT_ });
 var clients_ws = [];  //keep track of open ws sockets
 var clients_name = [];//keep track of connected clients(stores usernames)
@@ -147,26 +147,22 @@ var webscoket_module = {
 			Log_info(`[sendMsgToClient-2] ClientName=${ws.ClientName} Not Online, Msg:${msg}}`);
 		}
 	},
-	getClient(ClientName){
+	getClient(ClientName) {
 		/*clients_ws.forEach(function each(ws) {
 			if (ws.ClientName === ClientName) {
 				Log_warn(`[getClient] ClientName=${ws.ClientName} IP=${ws.ip}:PORT=${ws.port} `);
 				return ws;
 			}
 		});*/
-		for(var i =0;i<clients_ws.length;i++){
+		for (var i = 0; i < clients_ws.length; i++) {
 			if (clients_ws[i].ClientName === ClientName) {
-				Log_info(`[getClient] ClientName=${clients_ws[i].ClientName} IP=${clients_ws[i].ip}:PORT=${clients_ws[i].port} `);
+				Log_info(`[getClient-1] ClientName=${clients_ws[i].ClientName} IP=${clients_ws[i].ip}:PORT=${clients_ws[i].port} `);
 				return clients_ws[i];
-			} else {
-				Log_warn(`[getClient] Not find ClientNmae=${ClientName}`);
-				return undefined;
 			}
 		}
-		//
-		//return null;
+		Log_warn(`[getClient-2] Not find ClientNmae=${ClientName} clients_ws count:${clients_ws.length} `);
 	},
-	sendMsgToClient_ex(ClientName,msg){
+	sendMsgToClient_ex(ClientName, msg) {
 		var ws = this.getClient(ClientName);
 		if (ws && ws.readyState === 1) {
 			ws.send(msg);
